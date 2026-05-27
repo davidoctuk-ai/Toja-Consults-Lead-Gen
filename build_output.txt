@@ -1,0 +1,19 @@
+▲ Next.js 16.2.6 (Turbopack)
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 9.5s
+  Running TypeScript ...
+Failed to type check.
+
+./src/app/templates/page.tsx:73:28
+Type error: Type '{ children: Element; asChild: true; }' is not assignable to type 'IntrinsicAttributes & Props<unknown>'.
+  Property 'asChild' does not exist on type 'IntrinsicAttributes & Props<unknown>'.
+
+  [90m71 |[0m         <div className=[32m"flex items-center space-x-2"[0m>
+  [90m72 |[0m           <[33mDialog[0m open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+[31m[1m>[0m [90m73 |[0m             <[33mDialogTrigger[0m asChild>
+  [90m   |[0m                            [31m[1m^[0m
+  [90m74 |[0m               <[33mButton[0m>
+  [90m75 |[0m                 <[33mPlus[0m className=[32m"mr-2 h-4 w-4"[0m /> [33mCreate[0m [33mTemplate[0m
+  [90m76 |[0m               </[33mButton[0m>
+Next.js build worker exited with code: 1 and signal: null

@@ -1,0 +1,221 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum LeadStatus {
+  NEW
+  ENRICHED
+  CONTACTED
+  FOLLOW_UP
+  INTERESTED
+  DISCOVERY_CALL_BOOKED
+  PROPOSAL_SENT
+  WON
+  LOST
+}
+
+enum CampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
+enum EmailStatus {
+  QUEUED
+  SENT
+  OPENED
+  CLICKED
+  REPLIED
+  BOUNCED
+  FAILED
+}
+
+enum SignalType {
+  TENDER
+  HIRING
+  KEYWORD
+  GROWTH
+  COMPLIANCE_REQUIREMENT
+}
+
+model Lead {
+  id                 String             @id @default(cuid())
+  companyName        String
+  website            String?            @unique
+  location           String?
+  country            String?            // Added for global grouping
+  industry           String?
+  companySize        String?
+  description        String?
+  score              Int                @default(0)
+  status             LeadStatus         @default(NEW)
+  relevantIsoNeed    String?
+  decisionMakerName  String?
+  decisionMakerEmail String?            @unique
+  decisionMakerPhone String?
+  linkedinUrl        String?
+  lastContactedAt    DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  
+  signals            OpportunitySignal[]
+  emails             OutreachEmail[]
+  notes              LeadNote[]
+  campaignLeads      CampaignLead[]
+  bookings           Booking[]
+}
+
+model Booking {
+  id              String   @id @default(cuid())
+  leadId          String
+  lead            Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  calendarEventId String?  @unique
+  startTime       DateTime
+  endTime         DateTime
+  status          String   @default("SCHEDULED") // SCHEDULED, CANCELLED, COMPLETED
+  meetingLink     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model OpportunitySignal {
+  id          String     @id @default(cuid())
+  leadId      String
+  lead        Lead       @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type        SignalType
+  description String
+  confidence  Float      @default(1.0)
+  sourceUrl   String?
+  detectedAt  DateTime   @default(now())
+}
+
+model ScoringRule {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  points      Int
+  criteria    Json     // e.g., { field: "industry", operator: "equals", value: "Construction" }
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Campaign {
+  id           String         @id @default(cuid())
+  name         String
+  description  String?
+  status       CampaignStatus @default(DRAFT)
+  templateId   String?
+  template     EmailTemplate? @relation(fields: [templateId], references: [id])
+  schedule     Json?          // cron or delay settings
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  
+  emails       OutreachEmail[]
+  leads        CampaignLead[]
+}
+
+model CampaignLead {
+  id         String   @id @default(cuid())
+  campaignId String
+  leadId     String
+  status     String   @default("PENDING") // PENDING, SENT, REPLIED, etc.
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+  lead       Lead     @relation(fields: [leadId], references: [id])
+
+  @@unique([campaignId, leadId])
+}
+
+model EmailTemplate {
+  id        String     @id @default(cuid())
+  name      String
+  subject   String
+  body      String     // Supports variables like {{first_name}}
+  variables Json?      // List of supported variables
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  
+  campaigns Campaign[]
+}
+
+model OutreachEmail {
+  id         String      @id @default(cuid())
+  campaignId String?
+  campaign   Campaign?   @relation(fields: [campaignId], references: [id])
+  leadId     String
+  lead       Lead        @relation(fields: [leadId], references: [id])
+  subject    String
+  body       String
+  status     EmailStatus @default(QUEUED)
+  sentAt     DateTime?
+  openedAt   DateTime?
+  clickedAt  DateTime?
+  repliedAt  DateTime?
+  error      String?
+  createdAt  DateTime    @default(now())
+}
+
+model LeadNote {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AutomationRule {
+  id          String   @id @default(cuid())
+  name        String
+  trigger     String   // e.g., "SCORE_THRESHOLD", "STATUS_CHANGE"
+  condition   Json     // e.g., { minScore: 80 }
+  action      String   // e.g., "ADD_TO_CAMPAIGN"
+  actionData  Json     // e.g., { campaignId: "cl..." }
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ScraperConfig {
+  id          String   @id @default(cuid())
+  name        String
+  type        String   // GOOGLE_MAPS, LINKEDIN, JOB_BOARD, etc.
+  config      Json     // Search queries, locations, filters
+  lastRunAt   DateTime?
+  nextRunAt   DateTime? // Added for scheduling
+  interval    Int?      // In minutes, null for manual
+  status      String   @default("IDLE") // IDLE, RUNNING, FAILED
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AnalyticsSnapshot {
+  id             String   @id @default(cuid())
+  date           DateTime @default(now())
+  leadsFound     Int      @default(0)
+  leadsEnriched  Int      @default(0)
+  hotLeads       Int      @default(0)
+  emailsSent     Int      @default(0)
+  openRate       Float    @default(0)
+  replyRate      Float    @default(0)
+  callsBooked    Int      @default(0)
+  proposalsSent  Int      @default(0)
+  revenueForecast Float    @default(0)
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     Json
+  updatedAt DateTime @updatedAt
+}
