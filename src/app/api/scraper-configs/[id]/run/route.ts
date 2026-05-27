@@ -4,11 +4,12 @@ import { LeadDiscoveryService } from '@/lib/services/lead-discovery';
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
   try {
     const config = await prisma.scraperConfig.findUnique({
-      where: { id: params.id },
+      where: { id: id },
     });
 
     if (!config) {
@@ -17,7 +18,7 @@ export async function POST(
 
     // Update status to RUNNING
     await prisma.scraperConfig.update({
-      where: { id: params.id },
+      where: { id: id },
       data: { status: 'RUNNING' },
     });
 
@@ -37,7 +38,7 @@ export async function POST(
 
       // Update status back to IDLE
       await prisma.scraperConfig.update({
-        where: { id: params.id },
+        where: { id: id },
         data: { 
           status: 'IDLE',
           lastRunAt: new Date(),
@@ -52,7 +53,7 @@ export async function POST(
       console.error('Error running scraper config:', runError);
       
       await prisma.scraperConfig.update({
-        where: { id: params.id },
+        where: { id: id },
         data: { status: 'FAILED' },
       });
       

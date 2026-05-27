@@ -11,7 +11,7 @@ import {
   CheckCircle2,
   XCircle
 } from 'lucide-react';
-import { format } from "date-fns";
+import { format } from 'date-fns';
 
 export default function ConsultationsPage() {
   const [bookings, setBookings] = useState<any[]>([]);

@@ -3,11 +3,12 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
   try {
     const rule = await prisma.automationRule.findUnique({
-      where: { id: params.id },
+      where: { id: id },
     });
     if (!rule) {
       return NextResponse.json({ error: 'Automation rule not found' }, { status: 404 });
@@ -20,12 +21,13 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
   try {
     const body = await req.json();
     const rule = await prisma.automationRule.update({
-      where: { id: params.id },
+      where: { id: id },
       data: body,
     });
     return NextResponse.json(rule);
@@ -36,11 +38,12 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
   try {
     await prisma.automationRule.delete({
-      where: { id: params.id },
+      where: { id: id },
     });
     return NextResponse.json({ success: true });
   } catch (error: any) {

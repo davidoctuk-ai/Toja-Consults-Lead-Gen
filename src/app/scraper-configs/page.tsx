@@ -14,7 +14,7 @@ import {
   Search,
   Globe,
   Briefcase,
-  Link
+  Linkedin
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"

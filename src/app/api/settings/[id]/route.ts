@@ -3,11 +3,12 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
   try {
     const setting = await prisma.setting.findUnique({
-      where: { id: params.id },
+      where: { id: id },
     });
     if (!setting) {
       return NextResponse.json({ error: 'Setting not found' }, { status: 404 });
@@ -20,14 +21,15 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
   try {
     const body = await req.json();
     const { key, value } = body;
 
     const setting = await prisma.setting.update({
-      where: { id: params.id },
+      where: { id: id },
       data: { key, value },
     });
 
@@ -39,11 +41,12 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+    const { id } = await params;
   try {
     await prisma.setting.delete({
-      where: { id: params.id },
+      where: { id: id },
     });
     return NextResponse.json({ success: true });
   } catch (error: any) {
