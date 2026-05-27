@@ -14,7 +14,7 @@ import {
   Search,
   Globe,
   Briefcase,
-  Linkedin
+  Link
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -193,7 +193,7 @@ export default function ScraperConfigsPage() {
   const getScraperIcon = (type: string) => {
     switch (type) {
       case "GOOGLE_MAPS": return <Globe className="h-4 w-4" />
-      case "LINKEDIN": return <Linkedin className="h-4 w-4" />
+      case "LINKEDIN": return <Link className="h-4 w-4" />
       case "JOB_BOARD": return <Briefcase className="h-4 w-4" />
       default: return <Search className="h-4 w-4" />
     }
