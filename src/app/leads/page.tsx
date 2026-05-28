@@ -55,7 +55,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { industries } from "@/lib/mock-data"
+import { industries, leadStatuses } from "@/lib/mock-data"
 
 export default function LeadsPage() {
   const [leads, setLeads] = React.useState<any[]>([])
