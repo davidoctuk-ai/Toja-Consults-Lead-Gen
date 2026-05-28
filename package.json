@@ -14,6 +14,7 @@
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "@base-ui/react": "^1.5.0",
     "@hello-pangea/dnd": "^18.0.1",
     "@prisma/client": "^6.2.1",
     "axios": "^1.7.9",
