@@ -13,8 +13,7 @@ import {
   Calendar,
   Search,
   Globe,
-  Briefcase,
-  Linkedin
+  Briefcase
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
