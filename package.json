@@ -14,7 +14,7 @@
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
-    "@hello-pangea/dnd": "^17.0.0",
+    "@hello-pangea/dnd": "^18.0.1",
     "@prisma/client": "^6.2.1",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
