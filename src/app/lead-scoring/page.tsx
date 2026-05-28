@@ -346,7 +346,7 @@ export default function LeadScoringPage() {
                 <div className="grid grid-cols-3 gap-2">
                   <div className="grid gap-1">
                     <Label className="text-[10px]" htmlFor="field">Field</Label>
-                    <Select value={formData.field} onValueChange={(v) => setFormData({ ...formData, field: v })}>
+                    <Select value={formData.field} onValueChange={(v) => setFormData({ ...formData, field: v || "industry" })}>
                       <SelectTrigger id="field">
                         <SelectValue />
                       </SelectTrigger>
@@ -362,7 +362,7 @@ export default function LeadScoringPage() {
                   </div>
                   <div className="grid gap-1">
                     <Label className="text-[10px]" htmlFor="operator">Operator</Label>
-                    <Select value={formData.operator} onValueChange={(v) => setFormData({ ...formData, operator: v })}>
+                    <Select value={formData.operator} onValueChange={(v) => setFormData({ ...formData, operator: v || "equals" })}>
                       <SelectTrigger id="operator">
                         <SelectValue />
                       </SelectTrigger>

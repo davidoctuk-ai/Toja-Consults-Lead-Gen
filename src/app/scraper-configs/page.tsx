@@ -348,7 +348,7 @@ export default function ScraperConfigsPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
                   <Label>Source Type</Label>
-                  <Select value={formData.type} onValueChange={(v) => setFormData({ ...formData, type: v })}>
+                  <Select value={formData.type} onValueChange={(v) => setFormData({ ...formData, type: v || "GOOGLE_MAPS" })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>

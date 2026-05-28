@@ -380,7 +380,7 @@ export default function OpportunitySignalsPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
                   <Label>Trigger</Label>
-                  <Select value={formData.trigger} onValueChange={(v) => setFormData({ ...formData, trigger: v })}>
+                  <Select value={formData.trigger} onValueChange={(v) => setFormData({ ...formData, trigger: v || "SCORE_THRESHOLD" })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -403,7 +403,7 @@ export default function OpportunitySignalsPage() {
 
               <div className="grid gap-2">
                 <Label>Action</Label>
-                <Select value={formData.action} onValueChange={(v) => setFormData({ ...formData, action: v })}>
+                <Select value={formData.action} onValueChange={(v) => setFormData({ ...formData, action: v || "NOTIFY" })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

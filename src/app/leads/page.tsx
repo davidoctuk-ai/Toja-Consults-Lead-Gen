@@ -223,7 +223,7 @@ export default function LeadsPage() {
               />
             </div>
             <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-              <Select value={countryFilter} onValueChange={setCountryFilter}>
+              <Select value={countryFilter} onValueChange={(v) => setCountryFilter(v || "all")}>
                 <SelectTrigger className="w-full md:w-[150px]">
                   <SelectValue placeholder="Country" />
                 </SelectTrigger>
@@ -232,7 +232,7 @@ export default function LeadsPage() {
                   {countries.map(c => <SelectItem key={c} value={c.toLowerCase()}>{c}</SelectItem>)}
                 </SelectContent>
               </Select>
-              <Select value={industryFilter} onValueChange={setIndustryFilter}>
+              <Select value={industryFilter} onValueChange={(v) => setIndustryFilter(v || "all")}>
                 <SelectTrigger className="w-full md:w-[150px]">
                   <SelectValue placeholder="Industry" />
                 </SelectTrigger>
@@ -241,7 +241,7 @@ export default function LeadsPage() {
                   {industries.map(i => <SelectItem key={i} value={i.toLowerCase()}>{i}</SelectItem>)}
                 </SelectContent>
               </Select>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v || "all")}>
                 <SelectTrigger className="w-full md:w-[150px]">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
