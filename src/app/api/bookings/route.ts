@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'leadId and startTime are required' }, { status: 400 });
     }
 
-    const booking = await bookingService.createBooking(
+    const booking = await (bookingService as any).createBooking(
       leadId,
       new Date(startTime),
       endTime ? new Date(endTime) : undefined

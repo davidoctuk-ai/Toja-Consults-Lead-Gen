@@ -41,7 +41,7 @@ export class BookingService {
     }
   }
 
-  async createBooking(leadId: string, startTime: Date, endTime: Date) {
+  async createBooking(leadId: string, startTime: Date, endTime?: Date) {
     const lead = await prisma.lead.findUnique({
       where: { id: leadId },
     });
