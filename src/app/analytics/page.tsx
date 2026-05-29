@@ -296,7 +296,10 @@ export default function AnalyticsPage() {
                   dataKey="date" 
                   axisLine={false} 
                   tickLine={false} 
-                  tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
+                  tickFormatter={(value) => {
+                    const date = new Date(value);
+                    return isNaN(date.getTime()) ? value : date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                  }}
                   className="text-[10px] text-muted-foreground"
                 />
                 <YAxis 
@@ -407,10 +410,10 @@ export default function AnalyticsPage() {
                   <TableCell className="font-medium">{campaign.name}</TableCell>
                   <TableCell className="text-right">{campaign.sent}</TableCell>
                   <TableCell className="text-right">
-                    {((campaign.opened / campaign.sent) * 100).toFixed(1)}%
+                    {campaign.sent > 0 ? ((campaign.opened / campaign.sent) * 100).toFixed(1) : "0.0"}%
                   </TableCell>
                   <TableCell className="text-right text-secondary font-medium">
-                    {((campaign.replied / campaign.sent) * 100).toFixed(1)}%
+                    {campaign.sent > 0 ? ((campaign.replied / campaign.sent) * 100).toFixed(1) : "0.0"}%
                   </TableCell>
                   <TableCell className="text-right">
                     <span className="inline-flex items-center gap-1">

@@ -56,13 +56,14 @@ import {
 } from "@/components/ui/sheet"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { industries, leadStatuses } from "@/lib/mock-data"
+import { GlassCard } from "@/components/ui/glass-card"
 
 export default function LeadsPage() {
   const [leads, setLeads] = React.useState<any[]>([])
   const [filteredLeads, setFilteredLeads] = React.useState<any[]>([])
   const [selectedLead, setSelectedLead] = React.useState<any | null>(null)
   const [isSheetOpen, setIsSheetOpen] = React.useState(false)
-  const [viewMode, setViewMode] = React.useState<"list" | "grid" | "grouped">("list")
+  const [viewMode, setViewMode] = React.useState<"list" | "grid" | "grouped">("grid")
   const [isLoading, setIsLoading] = React.useState(true)
   const [isEnriching, setIsEnriching] = React.useState(false)
 
@@ -210,7 +211,7 @@ export default function LeadsPage() {
         </div>
       </div>
 
-      <Card>
+      <GlassCard className="border-primary/5">
         <CardHeader className="pb-3">
           <div className="flex flex-col lg:flex-row items-center gap-4">
             <div className="relative flex-1 w-full">
@@ -311,9 +312,13 @@ export default function LeadsPage() {
                     </TableCell>
                     <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                       <DropdownMenu>
-                        <DropdownMenuTrigger render={<Button variant="ghost" className="h-8 w-8 p-0" />}>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </DropdownMenuTrigger>
+                        <DropdownMenuTrigger
+                          render={
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          }
+                        />
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           <DropdownMenuItem onClick={() => openLeadDetails(lead)}>
@@ -333,7 +338,7 @@ export default function LeadsPage() {
           ) : viewMode === "grid" ? (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {filteredLeads.map((lead) => (
-                <Card key={lead.id} className="cursor-pointer hover:border-secondary/50 transition-colors" onClick={() => openLeadDetails(lead)}>
+                <GlassCard key={lead.id} className="cursor-pointer hover:border-secondary/50 transition-colors" onClick={() => openLeadDetails(lead)}>
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-start">
                       <div className="space-y-1">

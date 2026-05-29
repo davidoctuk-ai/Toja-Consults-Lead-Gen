@@ -11,11 +11,16 @@ function Sheet({ ...props }: SheetPrimitive.Root.Props) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
 }
 
-function SheetTrigger({ asChild, children, ...props }: any) {
-  if (asChild) {
-    return <SheetPrimitive.Trigger data-slot="sheet-trigger" render={children} {...props} />
-  }
-  return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props}>{children}</SheetPrimitive.Trigger>
+function SheetTrigger({ asChild, render, children, ...props }: any) {
+  return (
+    <SheetPrimitive.Trigger
+      data-slot="sheet-trigger"
+      render={render || (asChild ? children : undefined)}
+      {...props}
+    >
+      {asChild ? undefined : children}
+    </SheetPrimitive.Trigger>
+  )
 }
 
 function SheetClose({ ...props }: SheetPrimitive.Close.Props) {

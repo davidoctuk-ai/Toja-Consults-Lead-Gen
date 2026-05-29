@@ -101,9 +101,13 @@ export default function CampaignsPage() {
         <h2 className="text-3xl font-bold tracking-tight">Campaigns</h2>
         <div className="flex items-center space-x-2">
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-            <DialogTrigger render={<Button />}>
-              <Plus className="mr-2 h-4 w-4" /> Create Campaign
-            </DialogTrigger>
+            <DialogTrigger
+              render={
+                <Button>
+                  <Plus className="mr-2 h-4 w-4" /> Create Campaign
+                </Button>
+              }
+            />
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Create New Campaign</DialogTitle>
@@ -225,7 +229,9 @@ export default function CampaignsPage() {
                         {campaign.template?.name || "No template"}
                       </div>
                     </TableCell>
-                    <TableCell>{new Date(campaign.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {campaign.createdAt ? new Date(campaign.createdAt).toLocaleDateString() : "N/A"}
+                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end space-x-2">
                         {campaign.status === 'DRAFT' && (

@@ -15,6 +15,7 @@ import {
   Settings2,
   Target,
   Users,
+  ShieldCheck,
 } from "lucide-react"
 
 import {
@@ -110,15 +111,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-4 py-2 font-bold text-primary">
-          <Target className="h-6 w-6" />
-          <span className="group-data-[collapsible=icon]:hidden">Toja Lead Gen</span>
+        <div className="flex items-center gap-3 px-4 py-6 font-bold text-primary">
+          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/20">
+            <ShieldCheck className="h-5 w-5" />
+          </div>
+          <span className="group-data-[collapsible=icon]:hidden text-xl tracking-tighter">Toja Lead Gen</span>
         </div>
       </SidebarHeader>
       <SidebarContent>
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-[10px] uppercase font-black tracking-widest text-muted-foreground/50">{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {item.url ? (

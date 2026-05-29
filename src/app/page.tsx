@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { GlassCard } from "@/components/ui/glass-card";
 
 export default function DashboardPage() {
   const [data, setData] = useState<any>(null)
@@ -49,6 +50,8 @@ export default function DashboardPage() {
     hotLeads: 0,
     emailsSent: 0,
     callsBooked: 0,
+    openRate: 0,
+    replyRate: 0,
   }
 
   const previousSnapshot = snapshots[snapshots.length - 2] || latestSnapshot
@@ -69,7 +72,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <GlassCard>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Leads Found</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
@@ -80,8 +83,8 @@ export default function DashboardPage() {
               {calculateChange(latestSnapshot.leadsFound, previousSnapshot.leadsFound)}% from last period
             </p>
           </CardContent>
-        </Card>
-        <Card>
+        </GlassCard>
+        <GlassCard>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Hot Leads</CardTitle>
             <Target className="h-4 w-4 text-secondary" />
@@ -92,8 +95,8 @@ export default function DashboardPage() {
               {calculateChange(latestSnapshot.hotLeads, previousSnapshot.hotLeads)}% growth
             </p>
           </CardContent>
-        </Card>
-        <Card>
+        </GlassCard>
+        <GlassCard>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Emails Sent</CardTitle>
             <Mail className="h-4 w-4 text-muted-foreground" />
@@ -104,8 +107,8 @@ export default function DashboardPage() {
               {latestSnapshot.openRate}% avg open rate
             </p>
           </CardContent>
-        </Card>
-        <Card>
+        </GlassCard>
+        <GlassCard>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Calls Booked</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -116,11 +119,11 @@ export default function DashboardPage() {
               {calculateChange(latestSnapshot.callsBooked, previousSnapshot.callsBooked)}% this period
             </p>
           </CardContent>
-        </Card>
+        </GlassCard>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
+        <GlassCard className="col-span-4" hover={false}>
           <CardHeader>
             <CardTitle>ISO Opportunity Signals</CardTitle>
             <CardDescription>Recent buying signals detected across the web.</CardDescription>
@@ -157,11 +160,11 @@ export default function DashboardPage() {
                   score: 91,
                 },
               ].map((item, i) => (
-                <div key={i} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0">
+                <div key={i} className="flex items-center justify-between border-b border-primary/5 pb-4 last:border-0 last:pb-0">
                   <div className="space-y-1">
-                    <p className="font-medium text-sm">{item.company}</p>
+                    <p className="font-bold text-sm text-primary">{item.company}</p>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-[10px] uppercase font-bold">{item.signal}</Badge>
+                      <Badge variant="outline" className="text-[10px] uppercase font-bold bg-secondary/5 text-secondary border-secondary/20">{item.signal}</Badge>
                       <span className="text-xs text-muted-foreground">{item.iso}</span>
                     </div>
                   </div>
@@ -170,7 +173,7 @@ export default function DashboardPage() {
                       <TrendingUp className="h-3 w-3" />
                       <span>{item.score}</span>
                     </div>
-                    <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+                    <p className="text-[10px] text-muted-foreground flex items-center justify-end gap-1">
                       <Clock className="h-2 w-2" />
                       {item.time}
                     </p>
@@ -179,8 +182,8 @@ export default function DashboardPage() {
               ))}
             </div>
           </CardContent>
-        </Card>
-        <Card className="col-span-3">
+        </GlassCard>
+        <GlassCard className="col-span-3" hover={false}>
           <CardHeader>
             <CardTitle>Recent Conversions</CardTitle>
             <CardDescription>Latest leads moved to "Interested".</CardDescription>
@@ -193,22 +196,22 @@ export default function DashboardPage() {
                 { name: "Robert Taylor", company: "GreenEnergy UK", status: "Discovery Booked" },
                 { name: "Michael Ross", company: "Ross Construction", status: "Interested" },
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
+                <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs shadow-inner">
                     {item.name.charAt(0)}
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{item.name}</p>
-                    <p className="text-xs text-muted-foreground">{item.company}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-primary truncate">{item.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{item.company}</p>
                   </div>
-                  <Badge variant={item.status === "Interested" ? "secondary" : "default"} className="text-[10px]">
+                  <Badge variant={item.status === "Interested" ? "secondary" : "default"} className="text-[10px] font-bold">
                     {item.status}
                   </Badge>
                 </div>
               ))}
             </div>
           </CardContent>
-        </Card>
+        </GlassCard>
       </div>
     </div>
   );

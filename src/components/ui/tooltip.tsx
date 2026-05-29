@@ -21,11 +21,16 @@ function Tooltip({ ...props }: TooltipPrimitive.Root.Props) {
   return <TooltipPrimitive.Root data-slot="tooltip" {...props} />
 }
 
-function TooltipTrigger({ asChild, children, ...props }: any) {
-  if (asChild) {
-    return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" render={children} {...props} />
-  }
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props}>{children}</TooltipPrimitive.Trigger>
+function TooltipTrigger({ asChild, render, children, ...props }: any) {
+  return (
+    <TooltipPrimitive.Trigger
+      data-slot="tooltip-trigger"
+      render={render || (asChild ? children : undefined)}
+      {...props}
+    >
+      {asChild ? undefined : children}
+    </TooltipPrimitive.Trigger>
+  )
 }
 
 function TooltipContent({

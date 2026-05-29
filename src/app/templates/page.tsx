@@ -70,11 +70,13 @@ export default function TemplatesPage() {
         <h2 className="text-3xl font-bold tracking-tight">Email Templates</h2>
         <div className="flex items-center space-x-2">
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" /> Create Template
-              </Button>
-            </DialogTrigger>
+            <DialogTrigger
+              render={
+                <Button>
+                  <Plus className="mr-2 h-4 w-4" /> Create Template
+                </Button>
+              }
+            />
             <DialogContent className="sm:max-w-[600px]">
               <DialogHeader>
                 <DialogTitle>Create New Template</DialogTitle>
@@ -152,7 +154,7 @@ export default function TemplatesPage() {
               </CardContent>
               <CardFooter className="border-t pt-4 flex justify-between">
                 <Badge variant="outline" className="font-normal">
-                  {new Date(template.createdAt).toLocaleDateString()}
+                  {template.createdAt ? new Date(template.createdAt).toLocaleDateString() : "N/A"}
                 </Badge>
                 <div className="flex space-x-2">
                   <Button variant="ghost" size="icon">
